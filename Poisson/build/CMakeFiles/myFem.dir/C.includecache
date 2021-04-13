@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/andruon/Desktop/Elem finis/Poisson/src/fem.h
+stdio.h
+-
+stdlib.h
+-
+math.h
+-
+string.h
+-
+
+/home/andruon/Desktop/Elem finis/Poisson/src/homework.c
+fem.h
+/home/andruon/Desktop/Elem finis/Poisson/src/fem.h
+
