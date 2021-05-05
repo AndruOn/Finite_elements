@@ -27,7 +27,7 @@
 
 
 
-typedef enum {FEM_TRIANGLE,FEM_QUAD} femElementType;
+typedef enum {FEM_TRIANGLE,FEM_QUAD} femElementType; //!< Type d'élements du maillage (triangulaire ou quadrilataire)
 typedef enum {FEM_FULL,FEM_BAND,FEM_ITER} femSolverType;
 typedef enum {FEM_NO,FEM_XNUM,FEM_YNUM} femRenumType;
 
@@ -41,12 +41,18 @@ typedef struct {
     int *number;
 } femMesh;
 
-
+/**
+ * Contient les paramètres de la méthode d'integration.
+ * - n: Nombre de points
+ * - xsi
+ * - eta
+ * - weight
+ */
 typedef struct {
-    int n;
-    const double *xsi;
-    const double *eta;
-    const double *weight;
+    int n;                  //!< Nombre de points pour L'integration
+    const double *xsi;      //!< Liste de taille n. Contenant les xsi
+    const double *eta;      //!< Liste de taille n. Contenant les eta
+    const double *weight;   //!< Liste de taille n. Contenant les weights
 } femIntegration;
 
 typedef struct {
@@ -68,6 +74,12 @@ typedef struct {
     void (*dphi2dx)(double xsi, double eta, double *dphidxsi, double *dphideta);
 } femDiscrete;
 
+/**
+ * Système complet:
+ * - A : Matrice de raideur (sizexsize)
+ * - B : Vecteur force (size)
+ * - size
+ */
 typedef struct {
     double *B;
     double **A;
@@ -91,23 +103,42 @@ typedef struct {
     int iter;        
 } femIterativeSolver;
 
+/**
+ * Contient:
+ *  - le type de solveur
+ *  - Le système complet (Matrice de raideur et vecteur force)
+ */
 typedef struct {
-    femSolverType type;
-    femFullSystem *local;
-    void *solver;
+    femSolverType type;     //!< Type de solveur utilisé (BAND, FULL, ITER)
+    femFullSystem *local;   //!< Contient une structure du système complet pour un élément local
+    void *solver;           //!< Poite vers la fonction utiliser pour le solve le système
 } femSolver;
 
+
+/**
+ * Contient toute les propiétés pour résoudre le systeme:
+ * - mesh
+ * - Règles d'espace
+ * - Règles d'integration
+ * - Solveur à utiliser
+ * - Taille 
+ * - Noeuds locaux
+ * - Dirichlet
+ * - Soluce
+ * - Terme source
+ * - Terme dircihlet
+ */
 typedef struct {
-    femMesh *mesh;
-    femDiscrete *space;
-    femIntegration *rule;
-    femSolver *solver;
-    int size;
-    int sizeLoc;
-    int *dirichlet;
-    double *soluce;
-    double sourceValue;
-    double dirichletValue;
+    femMesh *mesh;           //!< Mesh du probème 
+    femDiscrete *space;      //!< Espace utilisé
+    femIntegration *rule;    //!< Règle d'integration
+    femSolver *solver;       //!< Solveur du système
+    int size;                //!< Nombre de noeud du système
+    int sizeLoc;             //!< Nombre de noeud par élément
+    int *dirichlet;          //!< Tableau de taille size. Contient 0 ou 1 si le ième noeud est soumis ,ou non, à la condiiton de dircihlet. L'indice i correspond au ième noeud.
+    double *soluce;          //!< Tableau de taille size. Contient la solution du problème.
+    double sourceValue;      //!< Terme source
+    double dirichletValue;   //!< Valeur condition de dirichlet
 } femDiffusionProblem;
 
 

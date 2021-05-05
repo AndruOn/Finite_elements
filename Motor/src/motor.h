@@ -16,6 +16,7 @@ typedef struct {
     int *domain;
 } motorMesh;
 
+
 typedef struct {    
     int size;
     motorMesh *mesh;

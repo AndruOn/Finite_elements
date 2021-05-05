@@ -1,4 +1,4 @@
-# Install script for directory: /Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov
+# Install script for directory: /home/andruon/Desktop/Elem finis/Motor/deps/bov
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -27,10 +27,20 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   endif()
 endif()
 
+# Install shared libraries without execute permission?
+if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
+  set(CMAKE_INSTALL_SO_NO_EXE "1")
+endif()
+
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/build/deps/bov/deps/glfw/cmake_install.cmake")
-  include("/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/build/deps/bov/deps/glad/cmake_install.cmake")
+  include("/home/andruon/Desktop/Elem finis/Motor/build/deps/bov/deps/glfw/cmake_install.cmake")
+  include("/home/andruon/Desktop/Elem finis/Motor/build/deps/bov/deps/glad/cmake_install.cmake")
 
 endif()
 

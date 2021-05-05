@@ -1,0 +1,9 @@
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/CMakeFiles/rebuild_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/CMakeFiles/edit_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/CMakeFiles/run.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/CMakeFiles/myFem.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/glfw-3.2.1/CMakeFiles/rebuild_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/glfw-3.2.1/CMakeFiles/edit_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/glfw-3.2.1/src/CMakeFiles/rebuild_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/glfw-3.2.1/src/CMakeFiles/edit_cache.dir
+/home/andruon/Desktop/Elem finis/MotorWithoutBov/build/glfw-3.2.1/src/CMakeFiles/glfw.dir

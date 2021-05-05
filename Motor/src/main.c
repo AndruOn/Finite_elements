@@ -3,12 +3,12 @@
  * 
  * ==========================================================================
  * 
- *  Simulation par ÈlÈments finis d'un motor ‡ reluctance variable
- *  Projet du cours LEPL1110 : annÈe 20-21
+ *  Simulation par ÔøΩlÔøΩments finis d'un motor ÔøΩ reluctance variable
+ *  Projet du cours LEPL1110 : annÔøΩe 20-21
  *
  *  Vincent Legat
  *  Michel Henry
- *  FranÁois Henrotte
+ *  FranÔøΩois Henrotte
  *  Benjamin Legat
  *  
  * ==========================================================================
@@ -19,7 +19,7 @@
 
 int main(void)
 {  
-    motorMesh *theMotorMesh = motorMeshRead("../data/motor4424.txt");
+    motorMesh *theMotorMesh = motorMeshRead("../data/motor400.txt");
     motor *theMotor = motorCreate(theMotorMesh);
     motorPrintInfos(theMotor);
 
@@ -46,10 +46,10 @@ int main(void)
 
     double 	theDiscreteTime = 0.0;
     double 	theStartingTime = 0.0;
-    double  theTimeStep  = 0.1;
+    double  theTimeStep  = 1;
     double  theStop = 0;
     double  omega = 1.0;
-    int     thePlotMode = 1;
+    int     thePlotMode = 0;
     int 	  theIteration = 0;
     char    theAction = 'K';
     char    theMessage[256];   
@@ -61,8 +61,8 @@ int main(void)
 
 //
 //  Gestion de l'animation en temps reel
-//    - "theTime" est le temps courant de l'application (sauf si il a ÈtÈ remis a zero :-)
-//    - Le facteur entre le temps rÈel et le temps de l'application permet de controler la vitesse d'execution
+//    - "theTime" est le temps courant de l'application (sauf si il a ÔøΩtÔøΩ remis a zero :-)
+//    - Le facteur entre le temps rÔøΩel et le temps de l'application permet de controler la vitesse d'execution
 //    - Si necessaire, une nouvelle iteration discrete est calculee...
 //      C'est donc ici que se trouve "virtuellement" la boucle sur toutes les iterations temporelles
 //
@@ -105,7 +105,7 @@ int main(void)
             glfemPlotMesh(theCoilNegative); }
 
 //
-// Visualisation du potentiel magnÈtique sur le rotor et le stator
+// Visualisation du potentiel magnÔøΩtique sur le rotor et le stator
 //        
   
         if (thePlotMode == 1) {
@@ -114,12 +114,12 @@ int main(void)
             glfemPlotSolution(theStator,theMotor->a); }
             
 //
-// Calcul d'une itÈration temporelle 
-// C'est ici qu'on exÈcute le projet :-)
+// Calcul d'une itÔøΩration temporelle 
+// C'est ici qu'on exÔøΩcute le projet :-)
 //
-//   Calcul du potentiel magnÈtique A
+//   Calcul du potentiel magnÔøΩtique A
 //   Calcul du couple
-//   Calcul de omega par l'Èquation de Newton
+//   Calcul de omega par l'ÔøΩquation de Newton
 //   Rotation du rotor et remaillage de la bande glissante
 //   Mise a jour des courants dans les inducteurs en fonction de l'angle
 //
@@ -151,10 +151,10 @@ int main(void)
 
 
 
-// =========== Quelques fonctions fournies gracieusement par l'Èquipe didactique ====== //
+// =========== Quelques fonctions fournies gracieusement par l'ÔøΩquipe didactique ====== //
 //
 // Attention : il n'est pas permis de les modifier :-)
-// Attention : la structure de donnÈes du problËme est figÈe et vous ne pouvez pas
+// Attention : la structure de donnÔøΩes du problÔøΩme est figÔøΩe et vous ne pouvez pas
 //             la modifier : c'est cette structure que le correcteur automatique
 //             utilisera pour tester votre programme
 //
@@ -177,7 +177,12 @@ static const double _hystereticCurveB[43] =  { 0.0,
       291.062951228, 854.036370229, 2515.3105707 };   
 
   
-
+/**
+ * - Identifie les noeuds mobile
+ * - initialise les incnnues theMotor->a √† X pour voir l'animation
+ * - Fixe les param√®tres mat√©riels
+ * - Fixe les param√®tres non-lin√©aires.
+ */
 motor *motorCreate(motorMesh *theMesh)
 {
     motor *theMotor = malloc(sizeof(motor));
@@ -188,23 +193,23 @@ motor *motorCreate(motorMesh *theMesh)
 //  Identification des noeuds mobiles 
 //
       
-    theMotor->movingNodes = malloc(sizeof(int)*theMesh->nNode);
-    for (int i=0; i < theMotor->size; i++) 
+    theMotor->movingNodes = malloc(sizeof(int)*theMesh->nNode); // Pire cas tout les noeuds sont mobiles
+    for (int i=0; i < theMotor->size; i++)                      // mets tout √† 0
         theMotor->movingNodes[i] = 0;
     for (int i=0; i < theMesh->nElem; i++) {
-        int domain = theMesh->domain[i];
-        if (domain == 8 || domain == 9 || domain == 10 ) {
+        int domain = theMesh->domain[i];                       // R√©cup√®re le domaine de l'element
+        if (domain == 8 || domain == 9 || domain == 10 ) {     // Correspond aux domaines constituants le rotor
             int *elem = &(theMesh->elem[i*3]);
             for (int j=0; j < 3; j++) {
                 theMotor->movingNodes[elem[j]] = 1; }}}
 //
-//  Initialisation des inconnues ‡ la valeur X pour voir le maillage tourner
+//  Initialisation des inconnues ÔøΩ la valeur X pour voir le maillage tourner
 //   
     theMotor->a = malloc(sizeof(double)*theMotor->size);
     for (int i=0; i < theMotor->size; i++) {
         theMotor->a[i] = theMesh->X[i];
-        printf(" %e \n",theMotor->a[i]); }
-        
+        //printf(" %e \n",theMotor->a[i]); 
+    }    
     theMotor->theta = 0;
     theMotor->omega = 0;
     theMotor->time  = 0;
@@ -242,8 +247,19 @@ motor *motorCreate(motorMesh *theMesh)
     return theMotor;
 }
 
-void motorPrintInfos(const motor *theMotor)
-{
+/**
+ * Imprime des informations concernant le moteur structure moteur
+ * - Nombre d'√©l√©ments par domaine
+ * - Nombre elements
+ * - Nombre de noeud
+ * - Flag de non lin√©arit√©
+ * - Inertie du moteur
+ * - Longueur de l'axe du moteur
+ * - Temp
+ * - Position angulaire
+ * - vitesse angulaire
+ */
+void motorPrintInfos(const motor *theMotor){
     int  size = theMotor->size;
     motorMesh *theMesh = theMotor->mesh;
     printf(" \n");
@@ -265,7 +281,9 @@ void motorPrintInfos(const motor *theMotor)
 
 }
 
-
+/**
+ * Parse le fichier texte et gen√®re le mesh. S√®pare les diff√®rent domaine pour remplire la structure motorMesh. 
+ */
 motorMesh *motorMeshRead(const char *filename)
 {
     motorMesh *theMesh = malloc(sizeof(motorMesh));
@@ -320,7 +338,10 @@ void motorMeshWrite(const motorMesh *theMesh, const char *filename)
     fclose(file);
 }
 
-
+/**
+ * UTILSE √† la visualisation.
+ * A partir d'un motorMesh retourne un femMesh du i√®me domaine.
+ */
 femMesh *motorDomainCreate(const motorMesh *theMotorMesh, int iDomain)
 {
     femMesh *theMesh = malloc(sizeof(femMesh)); 

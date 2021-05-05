@@ -17,8 +17,11 @@ static const double _gaussTri3Eta[3]     = { 0.166666666666667, 0.16666666666666
 static const double _gaussTri3Weight[3]  = { 0.166666666666667, 0.166666666666667, 0.166666666666667};
 
 
-femIntegration *femIntegrationCreate(int n, femElementType type)
-{
+/**
+ * Creation de la règle d'integration numérique.
+ * Peuple la structure femIntegration avec le nombre de points, xsi, eta, weight
+ */
+femIntegration *femIntegrationCreate(int n, femElementType type){
     femIntegration *theRule = malloc(sizeof(femIntegration));
     if (type == FEM_QUAD && n == 4) {
         theRule->n      = 4;
@@ -39,6 +42,7 @@ void femIntegrationFree(femIntegration *theRule)
     free(theRule);
 }
 
+
 void _q1c0_x(double *xsi, double *eta) 
 {
     xsi[0] =  1.0;  eta[0] =  1.0;
@@ -47,6 +51,10 @@ void _q1c0_x(double *xsi, double *eta)
     xsi[3] =  1.0;  eta[3] = -1.0;
 }
 
+/**
+ * Fonction de forme pour des éléments quadrilatère.
+ * Remplie le tableau phi des 4 fonctions de formes évaluées au point xsi, eta
+ */
 void _q1c0_phi(double xsi, double eta, double *phi)
 {
     phi[0] = (1.0 + xsi) * (1.0 + eta) / 4.0;  
@@ -55,6 +63,10 @@ void _q1c0_phi(double xsi, double eta, double *phi)
     phi[3] = (1.0 + xsi) * (1.0 - eta) / 4.0;
 }
 
+/**
+ * Dérivées des fonctions de formes pour un élément quadrilataire.
+ * Rempli les tableaux dphidxsi et dphideta valeurs des dérivées premières des fonctions de formes en xsi eta.
+ */
 void _q1c0_dphidx(double xsi, double eta, double *dphidxsi, double *dphideta)
 {
     dphidxsi[0] =   (1.0 + eta) / 4.0;  
@@ -75,6 +87,10 @@ void _p1c0_x(double *xsi, double *eta)
     xsi[2] =  0.0;  eta[2] =  1.0;
 }
 
+/**
+ * Fonction de forme pour des éléments triangulaire.
+ * Remplie le tableau phi des 3 fonctions de formes évaluées au point xsi, eta
+ */
 void _p1c0_phi(double xsi, double eta, double *phi)
 {
     phi[0] = 1 - xsi - eta;  
@@ -82,6 +98,10 @@ void _p1c0_phi(double xsi, double eta, double *phi)
     phi[2] = eta;
 }
 
+/**
+ * Dérivées des fonctions de formes pour un élément triangulaire.
+ * Rempli les tableaux dphidxsi et dphideta valeurs des dérivées premières des fonctions de formes en xsi eta.
+ */
 void _p1c0_dphidx(double xsi, double eta, double *dphidxsi, double *dphideta)
 {
     dphidxsi[0] = -1.0;  
@@ -92,6 +112,10 @@ void _p1c0_dphidx(double xsi, double eta, double *dphidxsi, double *dphideta)
     dphideta[2] =  1.0;
 }
 
+/**
+ * Génère la structure femDiscrete pour un élément à n noeud de type Triangulaire ou Quadrilataire.
+ * Seul n=3 Triangulaire et n=4 quadrilataire sont supportés.
+ */
 femDiscrete *femDiscreteCreate(int n, femElementType type)
 {
     femDiscrete *theSpace = malloc(sizeof(femDiscrete));
@@ -114,21 +138,33 @@ void femDiscreteFree(femDiscrete *theSpace)
     free(theSpace);
 }
 
+/**
+ * Rempli les tableaux xsi et eta
+ */
 void femDiscreteXsi2(femDiscrete* mySpace, double *xsi, double *eta)
 {
     mySpace->x2(xsi,eta);
 }
 
+/**
+ * Rempli le tableau phi des valeurs des fonction de formes définies dans mySpace (femDiscrete) évaluée au point xsi,eta.
+ */
 void femDiscretePhi2(femDiscrete* mySpace, double xsi, double eta, double *phi)
 {
     mySpace->phi2(xsi,eta,phi);
 }
 
+/**
+ * Rempli les tableaux dphidxsi et dphideta des dérivées des fonctions de formes définis dans mySpace (femDiscrete) évaluées au point xsi, eta.
+ */
 void femDiscreteDphi2(femDiscrete* mySpace, double xsi, double eta, double *dphidxsi, double *dphideta)
 {
     mySpace->dphi2dx(xsi,eta,dphidxsi,dphideta);
 }
 
+/**
+ * Imprime les valeurs de phi, dphidxsi, dphideta, xsi et eta pour mySpace (femDiscrete) donné.
+ */
 void femDiscretePrint(femDiscrete *mySpace)
 {
     int i,j;
@@ -149,12 +185,18 @@ void femDiscretePrint(femDiscrete *mySpace)
         printf(" \n"); }
 }
 
+/**
+ * Rempli pour le ième élement (iElem) les tableaux:
+ * - Coordonées en x: Tableau de taille nLocalNode
+ * - Coordonées en y: Tableau de taille nLocalNode
+ * - Numérotation globale de noeud (map): Tableau de taille nLocalNode. Contient les numéros des noeud du iElem. L'indice i correspondont au ième noeud de l'élement.
+ */
 void femMeshLocal(const femMesh *theMesh, const int iElem, int *map, double *x, double *y)
 {
     int j,nLocal = theMesh->nLocalNode;
     
     for (j=0; j < nLocal; ++j) {
-        map[j] = theMesh->elem[iElem*nLocal+j];
+        map[j] = theMesh->elem[iElem*nLocal+j]; // Récupère pour l'élement iElem le noeud j
         x[j]   = theMesh->X[map[j]];
         y[j]   = theMesh->Y[map[j]]; }   
 }
@@ -362,7 +404,9 @@ int femEdgesCompare(const void *edgeOne, const void *edgeTwo)
                         return  0;
 }
 
-
+/**
+ * Initialise la structure femSolver et assigne local à femFullSystem
+ */
 femSolver *femSolverCreate(int sizeLoc)
 {
     femSolver *mySolver = malloc(sizeof(femSolver));
@@ -370,6 +414,9 @@ femSolver *femSolverCreate(int sizeLoc)
     return (mySolver);
 }
 
+/**
+ * Retourne une structure femSolver contenant le type de solveur, la fonction solver à utilisé
+ */
 femSolver *femSolverFullCreate(int size, int sizeLoc)
 {
     femSolver *mySolver = femSolverCreate(sizeLoc);
@@ -794,6 +841,14 @@ double *femIterativeSolverEliminate(femIterativeSolver *mySolver)
     return(mySolver->X);
 }
 
+
+/**
+ * Initialise la structure femDiffusionProblem et la remplie .
+ * - Règle d'integration
+ * - Esapce
+ * - Méthode de résolution
+ * - Renumérotation des noeuds
+ */
 femDiffusionProblem *femDiffusionCreate(const char *filename, femSolverType solverType, femRenumType renumType)
 {
     int i,band;
@@ -823,6 +878,10 @@ femDiffusionProblem *femDiffusionCreate(const char *filename, femSolverType solv
             theProblem->dirichlet[theEdges->edges[i].node[1]] = 1; }}
     femEdgesFree(theEdges);
 
+
+    //
+    // Définit le solveur utilisé, initialise aussi la matrice de raideur et vecteur force si nécessaire
+    //
     switch (solverType) {
         case FEM_FULL : 
                 theProblem->solver = femSolverFullCreate(theProblem->size,
@@ -855,7 +914,13 @@ void femDiffusionFree(femDiffusionProblem *theProblem)
     free(theProblem);
 }
     
-
+/**
+ * Remplie les tableaux:
+ *  - map: Tableau de taille nLocalNode. Contient les numéro des noeuds globals du iElem.
+ *  - x: Tableau de taille nLocalNode. Contient les coordonées en x des noeuds du iElem
+ *  - y: Tableau de taille nLocalNode. Contient les coordonées en y des noeuds du iElem.
+ *  - dirichlet: Tableau de taille nLocalNode. Contient
+ */
 void femDiffusionMeshLocal(const femDiffusionProblem *theProblem, const int iElem, 
                                 int *map, int *dirichlet, double *x, double *y, double *u)
 {

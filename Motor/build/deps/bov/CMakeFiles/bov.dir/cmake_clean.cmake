@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/bov.dir/src/BOV.c.o"
-  "lib/libbov.pdb"
   "lib/libbov.a"
+  "lib/libbov.pdb"
 )
 
 # Per-language clean rules from dependency scanning.

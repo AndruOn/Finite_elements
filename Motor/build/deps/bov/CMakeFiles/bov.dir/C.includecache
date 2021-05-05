@@ -92,41 +92,41 @@ glad/glad.h
 GLFW/glfw3.h
 -
 
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/BOV.c
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/BOV.c
 BOV.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/BOV.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/BOV.h
 math.h
 -
 float.h
 -
 big_font.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/big_font.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/big_font.h
 points_vert.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/points_vert.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/points_vert.h
 points_geom.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/points_geom.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/points_geom.h
 points_frag.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/points_frag.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/points_frag.h
 lines_geom.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/lines_geom.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/lines_geom.h
 lines_frag.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/lines_frag.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/lines_frag.h
 curve_geom.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/curve_geom.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/curve_geom.h
 triangles_geom.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/triangles_geom.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/triangles_geom.h
 triangles_frag.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/triangles_frag.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/triangles_frag.h
 text_vert.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/text_vert.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/text_vert.h
 text_frag.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/text_frag.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/text_frag.h
 default_vert.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/default_vert.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/default_vert.h
 default_frag.h
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/default_frag.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/default_frag.h
 
-/Users/vl/LaTeX/epl1110-2021/Homeworks/Motor/deps/bov/src/big_font.h
+/home/andruon/Desktop/Elem finis/Motor/deps/bov/src/big_font.h
 stddef.h
 -
 stdint.h
